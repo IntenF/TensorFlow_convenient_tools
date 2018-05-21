@@ -217,33 +217,33 @@ def tensor_trainer(train_x,
   
   
   
-  def tensor_predictor(output_node, #出力
-                     feed_dict, #graphに与える入力を格納する辞書
-                     load_model_name, #モデルのパラメータを保存したファイル
-                     target='', #計算対象とするGPU
-                     graph=None, #計算対象とするtf.Graph
-                     config=tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True)) #tf.Sessionの設定。
-                  ):
-    '''
-    Ver 1.0
-    Python version >= 3.6
-    
-    saveしたmodelを利用して出力を得るための関数
-    
-    引数
-    output_node, #出力
-    feed_dict, #graphに与える入力を格納する辞書
-    load_model_name, #モデルのパラメータを保存したファイル
-    target='', #計算対象とするGPU
-    graph=None, #計算対象とするtf.Graph
-    config=tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True)) #tf.Sessionの設定。
+def tensor_predictor(output_node, #出力
+                 feed_dict, #graphに与える入力を格納する辞書
+                 load_model_name, #モデルのパラメータを保存したファイル
+                 target='', #計算対象とするGPU
+                 graph=None, #計算対象とするtf.Graph
+                 config=tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True)) #tf.Sessionの設定。
+              ):
+'''
+Ver 1.0
+Python version >= 3.6
 
-    '''
-    assert tf.gfile.Exists(load_model_name+'.index'), load_model_name+' does not exists'
-    
-    # Launch the graph    
-    with tf.Session(target=target, graph=graph, config=config) as sess:
-        saver = tf.train.Saver()
-        saver.restore(sess, load_model_name)
-        output = sess.run(output_node, feed_dict=feed_dict)
-    return output
+saveしたmodelを利用して出力を得るための関数
+
+引数
+output_node, #出力
+feed_dict, #graphに与える入力を格納する辞書
+load_model_name, #モデルのパラメータを保存したファイル
+target='', #計算対象とするGPU
+graph=None, #計算対象とするtf.Graph
+config=tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True)) #tf.Sessionの設定。
+
+'''
+assert tf.gfile.Exists(load_model_name+'.index'), load_model_name+' does not exists'
+
+# Launch the graph    
+with tf.Session(target=target, graph=graph, config=config) as sess:
+    saver = tf.train.Saver()
+    saver.restore(sess, load_model_name)
+    output = sess.run(output_node, feed_dict=feed_dict)
+return output

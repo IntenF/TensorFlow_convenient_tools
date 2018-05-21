@@ -82,7 +82,7 @@ def tensor_trainer(train_x,
         assert test_x is not None or test_y is not None, 'test_x and y must have data when is_log is True'
     
     if is_print:
-        print('\n|----------------------Tensor Trainer Start!----------------------|\n'+datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
+        print('\n|----------------------WestLab Tensor Trainer Start!----------------------|\n'+datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
     start_time = time.time()
     if is_print:
         print(f'''CONDITIONS\ntrain:x:{train_x.shape},y:{train_y.shape}  ''')
@@ -211,6 +211,39 @@ def tensor_trainer(train_x,
             train_writer.close()
     
     if is_print:
-        print(datetime.now().strftime("%Y/%m/%d %H:%M:%S")+'\n|----------------------Tensor Trainer End----------------------|\n')
+        print(datetime.now().strftime("%Y/%m/%d %H:%M:%S")+'\n|----------------------WestLab Tensor Trainer End----------------------|\n')
         
     return train_list_dict, test_list_dict
+  
+  
+  
+  def tensor_predictor(output_node, #出力
+                     feed_dict, #graphに与える入力を格納する辞書
+                     load_model_name, #モデルのパラメータを保存したファイル
+                     target='', #計算対象とするGPU
+                     graph=None, #計算対象とするtf.Graph
+                     config=tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True)) #tf.Sessionの設定。
+                  ):
+    '''
+    Ver 1.0
+    Python version >= 3.6
+    
+    saveしたmodelを利用して出力を得るための関数
+    
+    引数
+    output_node, #出力
+    feed_dict, #graphに与える入力を格納する辞書
+    load_model_name, #モデルのパラメータを保存したファイル
+    target='', #計算対象とするGPU
+    graph=None, #計算対象とするtf.Graph
+    config=tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True)) #tf.Sessionの設定。
+
+    '''
+    assert tf.gfile.Exists(load_model_name+'.index'), load_model_name+' does not exists'
+    
+    # Launch the graph    
+    with tf.Session(target=target, graph=graph, config=config) as sess:
+        saver = tf.train.Saver()
+        saver.restore(sess, load_model_name)
+        output = sess.run(output_node, feed_dict=feed_dict)
+    return output

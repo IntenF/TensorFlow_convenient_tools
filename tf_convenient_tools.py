@@ -82,7 +82,7 @@ def tensor_trainer(train_x,
         assert test_x is not None or test_y is not None, 'test_x and y must have data when is_log is True'
     
     if is_print:
-        print('\n|----------------------WestLab Tensor Trainer Start!----------------------|\n'+datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
+        print('\n|----------------------Tensor Trainer Start!----------------------|\n'+datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
     start_time = time.time()
     if is_print:
         print(f'''CONDITIONS\ntrain:x:{train_x.shape},y:{train_y.shape}  ''')
@@ -211,7 +211,7 @@ def tensor_trainer(train_x,
             train_writer.close()
     
     if is_print:
-        print(datetime.now().strftime("%Y/%m/%d %H:%M:%S")+'\n|----------------------WestLab Tensor Trainer End----------------------|\n')
+        print(datetime.now().strftime("%Y/%m/%d %H:%M:%S")+'\n|----------------------Tensor Trainer End----------------------|\n')
         
     return train_list_dict, test_list_dict
   
